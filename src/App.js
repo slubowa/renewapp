@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Box, createTheme, ThemeProvider, CssBaseline } from '@mui/material';
 import Login from "./Pages/Login.jsx";
 import UserPage from "./Pages/User.jsx"; 
@@ -61,6 +61,7 @@ const theme = createTheme({
             <Route path="/ProductsPage" element={<ProtectedRoute><ProductsPage /></ProtectedRoute>} />
             <Route path="/EnergyRequirement" element={<EnergyRequirementForm/>} />
             <Route path="/UserProfile" element={<ProtectedRoute><UserProfile /></ProtectedRoute>} />
+            <Route path="/" element={<Navigate replace to="/login" />} />
           </Routes>
           </Box>
           </Box>
