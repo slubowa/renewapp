@@ -6,6 +6,9 @@ import HomeIcon from '@mui/icons-material/Home';
 import { Link } from 'react-router-dom';
 import logo from '../Images/logo.svg'
 
+/**
+ * custom side bar component for ease of user navigation
+ */
 const iconMap = {
     Profile: <AccountCircleIcon />,
     Products: <ShoppingCartIcon />,

@@ -1,5 +1,9 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { validateToken } from "../backend/services/userService.js"; // 
+import { validateToken } from "../backend/services/userService.js"; 
+/**
+ * Provides an authentication context to the entire application. Manages the user's
+ * login state, handles session initialization, and user login/logout actions.
+ */
 
 export const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
@@ -8,7 +12,7 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true); 
 
-    useEffect(() => {
+    useEffect(() => {// Checks for a valid user session by validating the stored token and sets the user's state accordingly.
         const initializeUserSession = async () => {
             setIsLoading(true);
             try {

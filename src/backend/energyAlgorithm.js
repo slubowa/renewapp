@@ -2,7 +2,7 @@ import db from "./database.js";
 
 
 /**
- * This script contains functions to calculate and recommend an energy system configuration.
+ * This module contains functions to calculate and recommend an energy system configuration.
  * It utilizes user data to estimate the number of solar panels, batteries, and the inverter rating required.
  */
 
@@ -45,7 +45,7 @@ export function estimateSystemComponents(dailyEnergy) {
   const panelsNeeded = Math.ceil(dailyEnergy / dailyEnergyFromOnePanel);
   const totalBatteryCapacityNeeded = dailyEnergy * 1.2;
   const batteriesNeeded = Math.ceil(totalBatteryCapacityNeeded * 1000 / (BATTERY_VOLTAGE * 100));
-  const inverterRating = Math.ceil(dailyEnergy * 1.5 * 1000);  // Increase max wattage by 50%
+  const inverterRating = Math.ceil(dailyEnergy * 1.5 * 1000);  // Increase max wattage by 50%for startup buffer
 
   return { panelsNeeded, batteriesNeeded, inverterRating, dailyEnergyRequirement: Math.ceil(dailyEnergy) };
 }
@@ -61,7 +61,7 @@ async function energyAlgorithm(userId) {
   const inputs = {
     numberOfBulbs: userData.number_of_bulbs || 0,
     bulbWattage: 10,  // Default wattage for common solar bulbs
-    hoursPerDayBulbs: 5,
+    hoursPerDayBulbs: 6,//Assuming light are turned on 7pm-12am
     ownsTV: userData.television_size !== null,
     televisionSize: userData.screen_size || "<21",
     hoursPerDayTV: 4,

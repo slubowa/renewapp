@@ -37,7 +37,7 @@ const userLogin = async (userDetails) => {
     } catch (error) {
       console.error('Login failed', error.response)}}; 
 
-// Service function to submit energy requirements to the server
+// Service function to submit energy requirements to the backend
 const submitEnergyRequirements = async (formData, action = 'create', userId = null) => {
   if (formData.ownsTelevision === 'No') {
     formData.screenSize = null; 
@@ -76,7 +76,7 @@ const submitEnergyRequirements = async (formData, action = 'create', userId = nu
   }
 };
 
-// Fetches the user's energy consumption details from the server
+// Fetches the user's energy consumption details
 const getUserEnergyConsumption = async (userId) => {
   const token = localStorage.getItem('token');
 
@@ -201,7 +201,7 @@ const submitProductDetails = async (formData) => {
     }
   }
 };
-// Fetches products from the server based on the user type
+// Fetches products based on the user type
 const fetchProducts = async (isSupplierView, userId) => {
   const token = localStorage.getItem('token');
   if (!token) {

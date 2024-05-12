@@ -6,7 +6,7 @@ import MailIcon from '@mui/icons-material/Mail';
 import { fetchNotification, fetchUnreadCount, markAsRead } from '../backend/services/userService';
 
 /**
- * Component to display and manage user notifications.
+ * Component to display and manage user notifications within the app.
  */
 
 const NotificationIcon = () => {

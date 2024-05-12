@@ -1,5 +1,5 @@
 import React, {useContext, useState, useEffect } from 'react';
-import { Grid, Toolbar, Box, Typography, CircularProgress } from '@mui/material';
+import { Toolbar, Box, Typography, CircularProgress } from '@mui/material';
 import { AuthContext } from '../context/AuthContext.js';
 import { useAuth } from '../context/AuthContext.js';
 import ProductsView from '../components/ProductsView.jsx'; 
@@ -9,6 +9,10 @@ import OrderForm from '../components/SubmitOrder.jsx';
 import SideBar from '../components/Sidebar.jsx';
 import { red } from '@mui/material/colors';
 
+/**
+ * Products page to displays products to clients and allows suppliers to add or manage products.
+ * Changes view based on user type either client or su
+ */
 const ProductsPage = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);

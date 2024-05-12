@@ -9,6 +9,11 @@ import Section from '../components/Section.jsx';
 import ProductsView from '../components/ProductsView.jsx';
 import { fetchProducts, submitProductDetails } from '../backend/services/userService.js';
 
+/**
+ * Supplier page displaying products and also ability to add or update  products
+ * 
+ */
+
 const SupplierPage = () => {
   const [openUpdateForm, setOpenUpdateForm] = useState(false);
   const [formSubmittedCount, setFormSubmittedCount] = useState(0);
@@ -124,6 +129,7 @@ const SupplierPage = () => {
       <UpdateForm
         open={openUpdateForm}
         onClose={handleCloseUpdateForm}
+        title={"Update Products"}
         onSubmit={handleFormSubmit}
         formFields={formFields}
         defaultValues={productDetails}

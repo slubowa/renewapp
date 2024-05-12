@@ -7,6 +7,11 @@ import jwt from "jsonwebtoken";
 import energyAlgorithm from "./energyAlgorithm.js"
 import costProjection from "./costProjection.js"
 import { sendEmail } from './emailService.js';
+/**
+ * Server setup for handling user authentication, product management, energy requirements,
+ * and notifications. Includes routes for user registration, login, and CRUD operations on
+ * user-specific data.
+ */
 
 dotenv.config();
 const app = express();
@@ -17,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static("public"));
 app.use(express.json());
 app.use(cors());
-
+// authenticate tokens on protected routes
 const authenticateToken = (req, res, next) => {
   const authHeader = req.headers['authorization'];
   const token = authHeader && authHeader.split(' ')[1]; 
@@ -33,11 +38,6 @@ const authenticateToken = (req, res, next) => {
 
 //ROUTES//
 
-app.get('/protected', (req, res) => {
-    res.status(200).send('Server is reachable');
-  });
-  
-
 //create a users
 app.post('/register', async (req, res) => {
     try {
@@ -51,7 +51,6 @@ app.post('/register', async (req, res) => {
       );
   
       if (existingUser.rows.length > 0) {
-        // User already exists
         return res.status(400).json({ message: 'User already exists with the same username.' });
       }
   
@@ -66,7 +65,7 @@ app.post('/register', async (req, res) => {
       const user = newUser.rows[0];
         // Generate JWT token for the new user
         const token = jwt.sign(
-            { userId: user.id }, // Payload contains the new user ID
+            { userId: user.id }, 
             process.env.JWT_SECRET,
             { expiresIn: process.env.JWT_EXPIRATION }
         );
@@ -79,7 +78,7 @@ app.post('/register', async (req, res) => {
     }
   });
   
-//login a users
+//login a user
 
 app.post('/login', async (req, res) => {
   try {
@@ -93,10 +92,9 @@ app.post('/login', async (req, res) => {
       const passwordMatch = await bcrypt.compare(password, user.password);
 
       if (passwordMatch) {
-        // User authenticated, generate a JWT token
         const token = jwt.sign(
           { userId: user.id }, 
-          process.env.JWT_SECRET, // secret key for signing the token
+          process.env.JWT_SECRET, 
           { expiresIn: process.env.JWT_EXPIRATION } 
         );
 
@@ -105,7 +103,7 @@ app.post('/login', async (req, res) => {
         res.status(401).json({ message: 'Authentication failed' }); // Password does not match
       }
     } else {
-      res.status(404).json({ message: 'User not found' }); // User not found
+      res.status(404).json({ message: 'User not found' }); 
     }
   } catch (err) {
     console.error(err.message);
@@ -119,9 +117,6 @@ app.post('/submit-energy-requirements/',authenticateToken, async (req, res) => {
         fridgeSize, primaryEnergySource, gridUnitCost } = req.body;
   console.log(req.user.userId);
   const userId = req.user.userId;
-  console.log(userId);
-
-  // Convert 'Yes'/'No' answers to boolean
   const ownsTelevisionBool = ownsTelevision === 'Yes';
   const ownsFridgeBool = ownsFridge === 'Yes';
 
@@ -169,12 +164,8 @@ app.put('/update-energy-requirements/:userId', authenticateToken, async (req, re
   } = req.body;
   console.log('body',req.body);
 
-  // Convert 'Yes'/'No' answers to boolean for database
   const ownsTelevisionBool = ownsTelevision === 'Yes';
   const ownsFridgeBool = ownsFridge === 'Yes';
-
-  console.log("Received screenSize:", screenSize);
-  console.log("ownsTelevision:", ownsTelevision);
 
   try {
     const screenSizeToUpdate = ownsTelevision === 'Yes' ? screenSize : null;
@@ -272,9 +263,9 @@ app.post('/submit-product-details/',authenticateToken, async (req, res) => {
       res.status(500).send('Server error while submitting form data.');
   }
 });
-//supliers update product detaisl
+//supliers update product details
 app.put('/update-product-details/:userId', authenticateToken, async (req, res) => {
-  const supplierId = req.user.userId; // Or req.user.userId based on how you set up authentication
+  const supplierId = req.user.userId;
   const { equipmentType, batterySpecification, inverterSpecification, quantity, panelSpecification, unitCost } = req.body;
 
   try {
@@ -546,7 +537,7 @@ app.get('/get-user/', authenticateToken, async (req, res) => {
   }
 });
 
-// POST update user info
+// update user info
 app.post('/update-user/', authenticateToken, async (req, res) => {
   const userId = req.user.userId;
   const { firstname, lastname, username, currentPassword, newPassword } = req.body;

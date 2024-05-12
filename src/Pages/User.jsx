@@ -1,4 +1,5 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect, useState, } from 'react';
+import { useLocation } from 'react-router-dom';
 import { Grid, Box, Toolbar } from '@mui/material';
 import CustomAppBar from '../components/AppBar.jsx';
 import SideBar from '../components/Sidebar.jsx';
@@ -9,8 +10,15 @@ import UserEnergyConfig from "../components/EnergyConfig.jsx"
 import GetSystemRecommendations from '../components/SystemRecommendations.jsx';
 import CostingChart from '../components/CostingChart.jsx';
 
+/**
+ * Client's main page. has energy usage and system recommendation sections ans chrt to show 
+ * cost comparison with using solar setup
+ * 
+ */
 const UserPage = () => {
     const { currentUser } = useContext(AuthContext);
+    const [welcomeTitle, setWelcomeTitle] = useState('Welcome User');
+    const location = useLocation();
     const drawerItems = [
         { label: 'Home', path: '/User', icon: 'Home' },
         { label: 'Profile', path: '/UserProfile', icon: 'Profile' },
@@ -18,6 +26,12 @@ const UserPage = () => {
         
     ];
     const { logout } = useAuth();
+    
+    useEffect(() => {
+        if (currentUser) {
+            setWelcomeTitle(`Welcome ${currentUser.firstname|| 'user'}`);
+        }
+    }, []);
     return (
     <Box sx={{ display: 'flex' }}>
         <CustomAppBar title="User Dashboard" logout={logout} />
@@ -26,7 +40,7 @@ const UserPage = () => {
             <Toolbar />
             <Grid container spacing={3}>
             <Grid item xs={12}>
-                <Section title={`Welcome ${currentUser?.firstname || 'User'}`}>
+                <Section title={welcomeTitle}>
                 {/* Welcome section content */}
                 </Section>
             </Grid>

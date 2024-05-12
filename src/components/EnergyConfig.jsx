@@ -114,8 +114,6 @@ const UserEnergyConfig = () => {
       type: 'select',
       options: [
         { label: 'Grid Electricity', value: 'grid' },
-        { label: 'Natural Gas', value: 'naturalGas' },
-        { label: 'Solar', value: 'solar' }
         
       ],
       validation: { required: 'This field is required' }
@@ -127,7 +125,7 @@ const UserEnergyConfig = () => {
       validation: { }
     }
   ];
-  
+  //default values for user energy usage
   const defaultValues = userData ? {
     averageMonthlyConsumption: userData.average_monthly_consumption || '',
     currentEnergyCost: userData.current_energy_cost || '',
@@ -138,7 +136,7 @@ const UserEnergyConfig = () => {
     ownsFridge: userData.owns_fridge ? 'Yes' : 'No', 
     fridgeSize: userData.fridge_size || 'small', 
     primaryEnergySource: userData.primary_energy_source || 'grid',
-    gridUnitCost: userData.grid_unit_cost || '0.05',
+    gridUnitCost: userData.grid_unit_cost || '0.5',
 } : {};
 
 
@@ -168,6 +166,7 @@ const UserEnergyConfig = () => {
     }
   };
   const handleCloseForm = () => setIsFormOpen(false);
+  //card containing form which clients use to input their energy usage information
   return (
     <Card sx={{borderRadius:'5%', backgroundColor:'whitesmoke'}} >
       <CardContent>
@@ -186,6 +185,7 @@ const UserEnergyConfig = () => {
       </CardContent>
       <UpdateForm
         open={isFormOpen}
+        title={"Update Energy Configuration"}
         onClose={handleCloseForm}
         onSubmit={handleFormSubmit}
         formFields={formFields}

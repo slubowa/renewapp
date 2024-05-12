@@ -6,6 +6,12 @@ import { getUserDetails, updateUserDetails } from '../backend/services/userServi
 import CustomAppBar from '../components/AppBar.jsx';
 import SideBar from '../components/Sidebar.jsx';
 
+/**
+ * 
+ * Profile page for users to be able to edit their user details not related to enry uage like email
+ * and password
+ */
+
 const UserProfile = () => {
   const [user, setUser] = useState({});
   const [isEditing, setIsEditing] = useState(false);
@@ -41,7 +47,7 @@ const UserProfile = () => {
   const handleSave = async () => {
     try {
       await updateUserDetails(user);
-      setIsEditing(false); // Exit editing mode on successful save
+      setIsEditing(false); 
     } catch (error) {
       console.error('Error updating user:', error);
     }

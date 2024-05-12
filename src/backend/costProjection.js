@@ -60,14 +60,14 @@ const costProjection = async (userId) => {
     + (inverterCost||0);
     
     console.log(solarSystemCost);
-    // Calculate grid power cost over 5 years
+    // Calculate grid power cost over 7 years
     const gridCostPerYear = (userConsumption.average_monthly_consumption || 93) * 12 * (userConsumption.grid_cost_unit || 0.2);
     const gridCosts = Array.from({ length: 7 }, (_, index) => gridCostPerYear * (index + 1));
 
 
     console.log(gridCosts);
 
-    // Assuming the operational cost of solar is negligible over 5 years
+    // Assuming the operational cost of solar is negligible over 7 years
     const solarCosts = [ ...Array.from({ length:7 }, () => solarSystemCost)];
 
     console.log(solarCosts);
@@ -76,7 +76,7 @@ const costProjection = async (userId) => {
 
   } catch (error) {
     console.error('Error in costProjection:', error.message);
-    throw error; // Rethrow the error to handle it in the route that calls this function
+    throw error; 
   }
 };
 

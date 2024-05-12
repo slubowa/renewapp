@@ -5,13 +5,19 @@ import {Container, Box, Typography, TextField, Button, Grid, Radio, RadioGroup, 
 import { useAuth } from "../context/AuthContext";
 import { userRegistration, userLogin } from "../backend/services/userService";
 
+/**
+ * Handles both user registration and login processes. It dynamically switches
+ * between the login and registration forms based on user interaction. This component
+ * utilizes react-hook-form for form management and validation.
+ */
+
 function Login() {
   const navigate = useNavigate();
   const { login } = useAuth();
-  const [isRegistering, setIsRegistering] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [snackbarMessage, setSnackbarMessage] = useState("");
+  const [isRegistering, setIsRegistering] = useState(false);// Tracks whether the current mode is registration or login.
+  const [loading, setLoading] = useState(false);// Controls the display of the loading indicator during API calls.
+  const [openSnackbar, setOpenSnackbar] = useState(false);// Controls the visibility of the snackbar for notifications.
+  const [snackbarMessage, setSnackbarMessage] = useState("");// Holds the message to be displayed in the snackbar.
   const {register, handleSubmit, formState: { errors }, reset, watch,} = useForm();
 
   const handleSnackbarClose = () => {
@@ -19,6 +25,10 @@ function Login() {
   };
 
   const onSubmit = async (data) => {
+    /**
+ * Handles form submission for both registration and login. It performs an API call
+ * and navigates based on the user type. Errors are caught and displayed in a snackbar.
+ */
     console.log("Form Submitted", data);
     setLoading(true);
     try {
@@ -27,6 +37,7 @@ function Login() {
         login(registrationResponse.token, registrationResponse.user);
         setSnackbarMessage("Registration successful.");
         setOpenSnackbar(true);
+        //if user registered is a client navigate to energy requirement page and supplier page otherwise
         navigate(registrationResponse.user.userType === "supplier" ? "/Supplier" : "/EnergyRequirement");
       } else {
         const loginResponse = await userLogin(data);
@@ -85,6 +96,7 @@ function Login() {
     label="Email Address"
     {...register("username", {
       required: "Email is required",
+      //validate email is right format using regex
       pattern: {
         value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
         message: "Invalid email address",

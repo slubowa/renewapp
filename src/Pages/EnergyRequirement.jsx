@@ -4,6 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { submitEnergyRequirements } from '../backend/services/userService';
 import { TextField, Button, Radio, RadioGroup, FormControlLabel, FormControl, FormLabel, Box, MenuItem } from '@mui/material';
 
+/**
+ * Energy requirement form that is diplayed when a user is registering initially
+ * and they are clients
+ *  
+ */
 function EnergyRequirementForm() {
     const navigate = useNavigate();
     const { register, handleSubmit, watch, formState: { errors } } = useForm();
@@ -13,7 +18,7 @@ function EnergyRequirementForm() {
     const onSubmit = async (formData) => {
         try {
             await submitEnergyRequirements(formData);
-            navigate('/User'); 
+            navigate(`/User?key=${Date.now()}`); 
         } catch (error) {
             console.error(error); 
         }
@@ -53,9 +58,7 @@ function EnergyRequirementForm() {
           {...register("gridUnitCost", { required: true })}
           error={!!errors.gridUnitCost}
           helperText={errors.gridUnitCost ? "This field is required" : ""}
-        />
-
-        {/* Television ownership question */}
+        />       
         <FormControl component="fieldset">
           <FormLabel component="legend">Do you own a television?</FormLabel>
           <RadioGroup row {...register('ownsTelevision')}>
@@ -69,8 +72,6 @@ function EnergyRequirementForm() {
             {...register('screenSize')}
           />
         )}
-
-        {/* Refrigerator ownership question */}
         <FormControl component="fieldset">
           <FormLabel component="legend">Do you own a Refrigerator?</FormLabel>
           <RadioGroup row {...register('ownsFridge')}>
@@ -96,9 +97,6 @@ function EnergyRequirementForm() {
           {...register("primaryEnergySource")}
         >
           <MenuItem value="grid">Grid Electricity</MenuItem>
-          <MenuItem value="naturalGas">Natural Gas</MenuItem>
-          <MenuItem value="solar">Solar</MenuItem>
-          {/* Additional options */}
         </TextField>
 
         <Button type="submit" variant="contained">Submit</Button>

@@ -4,7 +4,7 @@ import NotificationIcon from './NotificationIcon';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown'; 
 
 /**
- * CustomAppBar is a component renders the top application bar.
+ * CustomAppBar is a component that renders the top application bar.
  * It includes a title, notifications icon, and a user menu with logout functionality.
  */
 

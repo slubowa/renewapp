@@ -6,17 +6,14 @@ dotenv.config();
 /**
  * Configures SendGrid mail service with the API key and sets up the email sending function.
  * This module provides functionality to send emails using SendGrid's email service.
- * The `sendEmail` function takes the recipient's email, subject, plain text content, and HTML content as arguments.
  */
 
-// Set your SendGrid API Key
 sgMail.setApiKey(process.env.SENDGRID_API_KEY);
-
 
 export const sendEmail = async (to, subject, text, html) => {
   const msg = {
     to,
-    from: process.env.SENDER_EMAIL, // Use the email verified with SendGrid.
+    from: process.env.SENDER_EMAIL, 
     subject,
     text,
     html,

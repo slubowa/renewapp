@@ -4,6 +4,12 @@ import { useAuth } from '../context/AuthContext.js';
 import {CircularProgress} from '@mui/material';
 import { validateToken } from '../backend/services/userService.js';
 
+/**
+ * 
+ * Protected routes component to help add layer of protection when user does not have access to a page
+ * or when their token has become invalid
+ */
+
 const ProtectedRoute = ({ children }) => {
   const navigate = useNavigate();
   const { currentUser, logout, isLoading } = useAuth();

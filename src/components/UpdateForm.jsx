@@ -3,10 +3,8 @@ import { useForm } from 'react-hook-form';
 import {Dialog, DialogTitle, DialogContent, TextField, Button, RadioGroup, FormControlLabel, Radio,
   FormControl, FormLabel, Select, MenuItem, Box,} from '@mui/material';
 
-const UpdateForm = ({ open, onClose, onSubmit, formFields, defaultValues }) => {
+const UpdateForm = ({ title, open, onClose, onSubmit, formFields, defaultValues }) => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm({ defaultValues });
-  const watchOwnsTelevision = watch("ownsTelevision", defaultValues.ownsTelevision);
-  const watchOwnsFridge = watch("ownsFridge", defaultValues.ownsFridge);
   const generateField = (field) => {
     if (field.conditional && watch(field.conditionalOn) !== field.conditionalValue) {
       return null;
@@ -54,7 +52,7 @@ const UpdateForm = ({ open, onClose, onSubmit, formFields, defaultValues }) => {
 
   return (
     <Dialog open={open} onClose={onClose} aria-labelledby="form-dialog-title" fullWidth = {true}>
-      <DialogTitle id="form-dialog-title" sx={{ display: 'block', textAlign: 'center', mb: 1 }}>Update Energy Usage</DialogTitle>
+      <DialogTitle id="form-dialog-title" sx={{ display: 'block', textAlign: 'center', mb: 1 }}>{title}</DialogTitle>
       <DialogContent sx={{ width: '100%', maxWidth: 'xl' }}>
         <Box component="form" onSubmit={handleSubmit(onSubmit)} sx={{ display: 'flex', flexDirection: 'column' }}>
           {formFields.map(field => generateField(field))}
