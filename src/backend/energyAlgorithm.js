@@ -45,7 +45,7 @@ export function estimateSystemComponents(dailyEnergy) {
   const panelsNeeded = Math.ceil(dailyEnergy / dailyEnergyFromOnePanel);
   const totalBatteryCapacityNeeded = dailyEnergy * 1.2;
   const batteriesNeeded = Math.ceil(totalBatteryCapacityNeeded * 1000 / (BATTERY_VOLTAGE * 100));
-  const inverterRating = Math.ceil(dailyEnergy * 1.5 * 1000);  // Increase max wattage by 50%for startup buffer
+  const inverterRating = Math.ceil(dailyEnergy * 1.5 * 1000);  // Increase max wattage by 50% for startup buffer
 
   return { panelsNeeded, batteriesNeeded, inverterRating, dailyEnergyRequirement: Math.ceil(dailyEnergy) };
 }
@@ -84,7 +84,6 @@ async function energyAlgorithm(userId) {
       RETURNING *`,
       [userId, systemComponents.dailyEnergyRequirement, systemComponents.panelsNeeded, systemComponents.batteriesNeeded, systemComponents.inverterRating]
     );
-    console.log('Stored Calculation Result:', rows[0]);
     return rows[0];
   } catch (error) {
     console.error('Error storing calculation results:', error);

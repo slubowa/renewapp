@@ -38,11 +38,10 @@ const authenticateToken = (req, res, next) => {
 
 //ROUTES//
 
-//create a users
+//create users
 app.post('/register', async (req, res) => {
     try {
       const { firstName, lastName, username, password, userType } = req.body;
-      console.log(req.body);
   
       // Check if user already exists with the same email or username
       const existingUser = await db.query(
@@ -85,7 +84,6 @@ app.post('/login', async (req, res) => {
     const { username, password } = req.body;
     console.log(req.body);
     const userQueryResult = await db.query('SELECT * FROM users WHERE username = $1', [username]);
-    console.log(`Query results:`, userQueryResult.rows);
 
     if (userQueryResult.rows.length > 0) {
       const user = userQueryResult.rows[0];
@@ -139,7 +137,6 @@ app.get('/get-energy-consumption/:userId', authenticateToken, async (req, res) =
   try {
     const user_id = req.user.userId; 
     const result = await db.query('SELECT * FROM energy_consumption WHERE user_id = $1', [user_id]);
-    console.log(result.rows[0]);
     res.json({ data: result.rows[0] });
   } catch (error) {
     console.error(error);
@@ -162,7 +159,6 @@ app.put('/update-energy-requirements/:userId', authenticateToken, async (req, re
     primaryEnergySource,
     gridUnitCost
   } = req.body;
-  console.log('body',req.body);
 
   const ownsTelevisionBool = ownsTelevision === 'Yes';
   const ownsFridgeBool = ownsFridge === 'Yes';
@@ -223,7 +219,6 @@ app.get('/system-recommendations/:userId', authenticateToken, async (req, res) =
     const result = await db.query('SELECT * FROM system_recommendation WHERE user_id = $1', [userId]);
   
     if (result.rows.length > 0) {
-      console.log(result.rows);
       res.json(result.rows[0]); 
     } else {
       res.status(404).json({ message: 'No recommendations found for the given user ID.' });
@@ -246,9 +241,7 @@ app.get('/api/cost-projection/:userId', authenticateToken, async (req, res) => {
 //supplier submit products route
 app.post('/submit-product-details/',authenticateToken, async (req, res) => {
   const { equipmentType, batterySpecification, inverterSpecification,panelSpecification, quantity, unitCost } = req.body;
-  console.log(req.user.userId);
   const supplierId = req.user.userId;
-  console.log(supplierId);
 
   try {
       const result = await db.query(
@@ -357,7 +350,6 @@ app.post('/submit-or-update-product-details/', authenticateToken, async (req, re
 //get supplier products
 app.get('/supplier-products/:userId', authenticateToken, async (req, res) => {
   const  supplierId = req.user.userId;
-  console.log(supplierId);
   try {
     const result = await db.query(
       `SELECT equipment_type, battery_specification, inverter_specification, panel_specification, COALESCE(SUM(quantity), 0) as total_quantity, 
@@ -365,7 +357,6 @@ app.get('/supplier-products/:userId', authenticateToken, async (req, res) => {
       GROUP BY equipment_type, battery_specification, inverter_specification, panel_specification, unit_cost;`,
       [supplierId]
     );
-    console.log(result);
     res.json(result.rows);
   } catch (error) {
     console.error('Error fetching supplier products:', error);
@@ -391,20 +382,12 @@ app.get('/products', authenticateToken, async (req, res) => {
 //submit an order
 app.post('/submit-product-order/',authenticateToken, async (req, res) => {
   const { equipmentType, specification, quantity, supplier, totalCost } = req.body;
-  console.log(req.body)
-
-  console.log("Sending email via SendGrid API");
 
   const clientId = req.user.userId
-  const supplierEmail = supplier
-  
-  console.log(clientId);
-  
+  const supplierEmail = supplier 
   const clientEmailResult = await db.query(`SELECT username FROM users WHERE id = $1`,
   [clientId]);
-  
   const clientEmail = clientEmailResult.rows[0].username;
-
   const supplierIdResult = await db.query(`SELECT id FROM users WHERE username = $1`,
   [supplier]);
   const supplierId = supplierIdResult.rows[0].id;
@@ -417,12 +400,9 @@ const orderSummary = `Order Details:
 - Total Cost: $${totalCost}`;
 
 const textContentForSupplier = `New Order Received! ${orderSummary} Please review the order details.`;
-const htmlContentForSupplier = `<h1>New Order Received!</h1><p>${orderSummary.replace(/\n/g, '<br>')}</p>`;
-  
+const htmlContentForSupplier = `<h1>New Order Received!</h1><p>${orderSummary.replace(/\n/g, '<br>')}</p>`; 
 const textContentForClient = `Your Order Submission Confirmation ${orderSummary} Thank you for your order!`;
-const htmlContentForClient = `<h1>Your Order Submission Confirmation</h1><p>${orderSummary.replace(/\n/g, '<br>')}</p>`;
-  
-  
+const htmlContentForClient = `<h1>Your Order Submission Confirmation</h1><p>${orderSummary.replace(/\n/g, '<br>')}</p>`;  
 const orderCost = totalCost;
 
 try {
@@ -473,7 +453,6 @@ app.get('/notifications/unread-count', authenticateToken, async (req, res) => {
       [userId, 'false'] 
     );
     const unreadCount = queryResult.rows[0] ? parseInt(queryResult.rows[0].count, 10) : 0;
-    console.log(unreadCount);
     res.json({ count: unreadCount}); 
   } catch (error) {
     console.error('Error fetching unread notifications count:', error);
@@ -525,7 +504,6 @@ app.post('/notifications-mark-read/:notificationId/read', authenticateToken, asy
 
 // GET user info
 app.get('/get-user/', authenticateToken, async (req, res) => {
-
   const userId = req.user.userId;
 
   try {

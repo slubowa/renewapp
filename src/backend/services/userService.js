@@ -71,7 +71,7 @@ const submitEnergyRequirements = async (formData, action = 'create', userId = nu
       throw new Error(error.response.data.message); 
     } else {
       console.error('Submission failed', error);
-      throw new Error('Failed to process energy requirements. Please try again later.'); // Generic error message for other cases
+      throw new Error('Failed to process energy requirements. Please try again later.'); 
     }
   }
 };

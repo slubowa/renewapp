@@ -16,7 +16,6 @@ export const LowestEquipmentCost = async (type, specification) => {
     WHERE equipment_type = $1 AND ${type}_specification = $2;
   `;
   const result = await db.query(query, [type, specification]);
-  console.log('result:',result)
   return result.rows.length ? parseFloat(result.rows[0].lowest_cost) : 0;
 };
 
@@ -37,7 +36,6 @@ const costProjection = async (userId) => {
       [userId]
     );
     const recommendation = recommendationResult.rows[0];
-    console.log('recommendation:',recommendation)
     if (!recommendation) {
       throw new Error("System recommendation not found.");
     }
@@ -52,26 +50,16 @@ const costProjection = async (userId) => {
       : ('1500W')))
       
     ]);
-     console.log('panelCost,batteryCost,inverterCost',panelCost,batteryCost,inverterCost);
-  
     // Calculate the total cost of the recommended solar system
     let solarSystemCost = (recommendation.panels * panelCost||0)
     + (recommendation.batteries * batteryCost||0)
     + (inverterCost||0);
-    
-    console.log(solarSystemCost);
     // Calculate grid power cost over 7 years
     const gridCostPerYear = (userConsumption.average_monthly_consumption || 93) * 12 * (userConsumption.grid_cost_unit || 0.2);
     const gridCosts = Array.from({ length: 7 }, (_, index) => gridCostPerYear * (index + 1));
 
-
-    console.log(gridCosts);
-
     // Assuming the operational cost of solar is negligible over 7 years
     const solarCosts = [ ...Array.from({ length:7 }, () => solarSystemCost)];
-
-    console.log(solarCosts);
-
     return { solarCosts, gridCosts };
 
   } catch (error) {

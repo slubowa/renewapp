@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Button, CircularProgress, Card, CardContent, Typography } from '@mui/material';
-import {submitEnergyRequirements, getUserEnergyConsumption } from '../backend/services/userService'; // Adjust the path as needed
+import {submitEnergyRequirements, getUserEnergyConsumption } from '../backend/services/userService';
 import { useAuth } from '../context/AuthContext';
 import UpdateForm from './UpdateForm';
 import AssessmentIcon from '@mui/icons-material/Assessment';

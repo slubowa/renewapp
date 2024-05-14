@@ -12,7 +12,8 @@ export const AuthProvider = ({ children }) => {
     const [currentUser, setCurrentUser] = useState(null);
     const [isLoading, setIsLoading] = useState(true); 
 
-    useEffect(() => {// Checks for a valid user session by validating the stored token and sets the user's state accordingly.
+    useEffect(() => {
+    // Checks for a valid user session by validating the stored token and sets the user's state accordingly.
         const initializeUserSession = async () => {
             setIsLoading(true);
             try {
