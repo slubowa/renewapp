@@ -1,0 +1,74 @@
+# Local installation Instructions for RenewApp
+
+## Prerequisites
+- Node.js (v14.0 or higher recommended)
+- PostgreSQL (v15.0 or higher recommended)
+
+The Prerequisites can be installed from
+https://nodejs.org/en/downloaded
+https://postgresql.org/download/
+
+## Setup Instructions
+
+### 1. Download the zip folder from Pebblepad
+- Unzip and save folder in desired location
+
+### 2. Install Dependencies
+- Navigate to the saved directory and install the required npm packages by running the command:
+  npm install
+
+### 3. Database Setup
+
+Make sure the PostgreSQL bin directory is added to your system's PATH. This allows you to run psql from any terminal location. 
+    -For example, on Windows, you can add: 
+     C:\Program Files\PostgreSQL\xx\bin (replace xx with your PostgreSQL version) to your PATH       environment variable. 
+    -On Unix-based systems (like macOS or Linux), you can add the following line to your ~/.bashrc or ~/.zshrc file: export PATH=$PATH:/usr/local/pgsql/bin
+
+
+- Create a new PostgreSQL database using the command:
+  createdb -U postgres renewapp
+  - If prompted for a password, enter the password for your PostgreSQL 'postgres' user.
+  - Ensure you use the same password as in the .env file found at /renewapp/src/backend/.env
+
+- Import the SQL script to set up the database schema and initial data:
+  psql -U postgres -d renewapp -f /Renewapp\Project\Submission/Setup/Database/renewapp.sql
+
+### 4. Environment Variables
+The .env file is critical to the working of the application. If you are using the folder from Pebblepad, this is contained there in; however, if you cloned the repository from GitHub, you will need to copy and paste the .env file from the Pebblepad zip folder to the location /renewapp/src/backend
+
+
+### 5. Start the Application
+- Navigate to the renewapp folder:
+  cd renewapp
+- Start the React application:
+  npm start
+- In a new terminal window, navigate to the backend folder and run the server script:
+  
+  cd renewapp/src/backend
+  node server.js
+
+### 6. Access the Application
+- Open a web browser and visit the following URL to access the application:
+  http://localhost:3000
+
+### Note:
+- If you encounter any issues with database connections, verify the `.env` is in the right location as in step 4.
+- The folders from GitHub and Pebblepad are the same except for the .env file as this was added to .gitignore
+-Starting the app from the Pebblepad folder is seamless as it has all the files including the .env file. Therefore it is recommended you use this folder for faster local installation.
+
+- The Github repository is at https://github.com/slubowa/renewapp
+
+The application is hosted on Heroku and can be found at:
+
+https://renewapp-5552c93e04e2.herokuapp.com/
+
+Login details:
+Client:
+Email: klus@renewapp.com
+Password: Testing@53421
+
+Supplier:
+Email: John@renewapp.com
+Password: Testing@53421
+
+-You can also create your own users, that's is supplier and client, which a working email address to walk through the user registration process.
